@@ -20,7 +20,7 @@ const ersetzeWoerter = {
   'wir': 'oik'
 };
 
-// Funktion ersetzt Wörter im Text
+
 function ersetze(text) {
   let worte = text.split(' ');
   for(let i = 0; i < worte.length; i++) {
@@ -32,7 +32,6 @@ function ersetze(text) {
   return worte.join(' ');
 }
 
-// Funktion verschlüsselt ein Wort (außer Ersatzwörter)
 function verschluesseln(wort) {
   let ergebnis = '';
   for (let buchstabe of wort) {
@@ -45,7 +44,7 @@ function verschluesseln(wort) {
   return ergebnis;
 }
 
-// Ganze Satz verschlüsseln, aber Ersatzwörter nicht ändern
+
 function verschluessleSatz(text) {
   const ersatzWoerterWerte = Object.values(ersetzeWoerter);
   const worte = text.split(' ');
@@ -60,7 +59,7 @@ function verschluessleSatz(text) {
   return verschluesselteWorte.join(' ');
 }
 
-// Beispiel mit Benutzereingabe:
+
 const eingabe = prompt("Gib ein Wort oder Text ein:");
 const ersetzt = ersetze(eingabe);
 console.log("Text nach Ersetzung:", ersetzt);
