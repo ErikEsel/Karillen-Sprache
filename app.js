@@ -22,19 +22,17 @@ const ersetzeWoerter = {
 
 // Funktion ersetzt Wörter im Text
 function ersetze(text) {
-  // Für einfache Ersetzung alle Wörter in Kleinbuchstaben vergleichen
   let worte = text.split(' ');
   for(let i = 0; i < worte.length; i++) {
     const wortLower = worte[i].toLowerCase();
     if(ersetzeWoerter[wortLower]) {
-      // Ersetze das Wort durch den Ersatz
       worte[i] = ersetzeWoerter[wortLower];
     }
   }
   return worte.join(' ');
 }
 
-// Funktion verschlüsselt ein Wort
+// Funktion verschlüsselt ein Wort (außer Ersatzwörter)
 function verschluesseln(wort) {
   let ergebnis = '';
   for (let buchstabe of wort) {
@@ -47,12 +45,13 @@ function verschluesseln(wort) {
   return ergebnis;
 }
 
-// Funktion verschlüsselt einen ganzen Satz
+// Ganze Satz verschlüsseln, aber Ersatzwörter nicht ändern
 function verschluessleSatz(text) {
+  const ersatzWoerterWerte = Object.values(ersetzeWoerter);
   const worte = text.split(' ');
   const verschluesselteWorte = worte.map(wort => {
-    // Wenn das Wort schon ein Ersatzwort ist, nicht verschlüsseln
-    if (Object.values(ersetzeWoerter).includes(wort)) {
+    if (ersatzWoerterWerte.includes(wort)) {
+      // Ersatzwort: nicht verschlüsseln, einfach zurückgeben
       return wort;
     } else {
       return verschluesseln(wort);
