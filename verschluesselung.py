@@ -1,3 +1,6 @@
+
+import re
+
 mapping = {
     'A': 'M', 'B': 'N', 'D': 'O', 'E': 'P', 'F': 'R', 'G': 'S',
     'H': 'T', 'I': 'U', 'K': 'W', 'L': 'Z', 'M': 'A', 'N': 'B',
@@ -11,16 +14,50 @@ mapping = {
     'ä': 'm', 'ö': 'd', 'ü': 'i'
 }
 
+ersetze_woerter = {
+    'ich': 'ik',
+    'er': 'oi',
+    'du': 'oi',
+    'es': 'oi',
+    'sie': 'oi',
+    'wir': 'oik',
+}
+
+# Alle Ersetzungswerte (also 'ik', 'oi', 'oik', ...)
+ersetzt_woerter_liste = set(ersetze_woerter.values())
+
+def ersetze(text):
+    for alt, neu in ersetze_woerter.items():
+        pattern = r'\b' + re.escape(alt) + r'\b'
+        text = re.sub(pattern, neu, text)
+    return text
+
 def verschluesseln(text):
-    ergebnis = ''
-    for buchstabe in text:
-        if buchstabe in mapping:
-            ergebnis += mapping[buchstabe]
+    worte = text.split()
+    ergebnis_liste = []
+    for wort in worte:
+        # Wenn das Wort in der Ersetzungs-Liste ist, nicht verschlüsseln
+        if wort in ersetzt_woerter_liste:
+            ergebnis_liste.append(wort)
         else:
-            ergebnis += buchstabe
-    return ergebnis.upper()
+            verschl_word = ''
+            for buchstabe in wort:
+                if buchstabe in mapping:
+                    verschl_word += mapping[buchstabe]
+                else:
+                    verschl_word += buchstabe
+            ergebnis_liste.append(verschl_word)
+    return ' '.join(ergebnis_liste)
 
 if __name__ == "__main__":
-    wort = input("Gib ein Wort ein, das du verschlüsseln möchtest: ")
-    print("Verschlüsseltes Wort:", verschluesseln(wort))
-input("Drücke Enter, um das Programm zu beenden...")
+    try:
+        eingabe = input("Gib ein Wort oder Text ein: ").lower()
+        ersetzt = ersetze(eingabe)
+        print("Text nach Ersetzung:", ersetzt)  # Ersetzter Text
+        
+        verschluesselt = verschluesseln(ersetzt)
+        print("Verschlüsseltes Wort:", verschluesselt)  # Verschlüsselter Text, aber Ersetzungswörter unverändert
+        
+    except Exception as e:
+        print("Fehler:", e)
+    input("Drücke Enter, um das Programm zu beenden...")
